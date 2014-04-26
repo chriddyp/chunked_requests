@@ -2,7 +2,7 @@ import time
 import httplib
 
 
-class chunked_request:
+class Stream:
     def __init__(self):
         self.maxtries = 5
         self._tries = 0
