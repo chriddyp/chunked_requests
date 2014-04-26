@@ -3,25 +3,31 @@ import httplib
 
 
 class Stream:
-    def __init__(self):
+    def __init__(self, server, port=80, headers={}):
+        ''' Initialize a stream object and an HTTP Connection
+        with chunked Transfer-Encoding to server:port with optional headers.
+        '''
         self.maxtries = 5
         self._tries = 0
         self._delay = 1
         self._closed = False
         self.response = None
+        self._server = server
+        self._port = port
+        self._headers = headers
         self._connect()
 
     def write(self, data, reconnect=True):
         ''' Send `data` to the server in chunk-encoded form.
-        If `reconnect=True`, check the connection to the server before
+        If `reconnect` is `True`, check the connection to the server before
         writing, and reconnect if disconnected.
         '''
 
-        if not self.isconnected():
+        if not self._isconnected():
             if reconnect:
                 self._reconnect()
             else:
-                raise Exception("Socket is closed,"
+                raise Exception("Socket is closed, "
                                 "cannot write to a closed socket.")
         try:
             msg = data
@@ -36,10 +42,13 @@ class Stream:
             else:
                 raise e
 
-    def _connect(self, server, port=80, headers={}):
+    def _connect(self):
         ''' Initialize an HTTP connection with chunked Transfer-Encoding
         to server:port with optional headers.
         '''
+        server = self._server
+        port = self._port
+        headers = self._headers
         self._conn = httplib.HTTPConnection(server, port)
 
         self._conn.putrequest('POST', '/')
@@ -94,7 +103,6 @@ class Stream:
 
         # 1 - check if we've closed the connection.
         if self._closed:
-            print "we closed the connection"
             return False
 
         # 2 - Check if the original socket connection failed
@@ -123,8 +131,7 @@ class Stream:
         ''' Connect if disconnected.
         Retry self.maxtries times with delays
         '''
-        if not self.isconnected():
-            print 'attempting to re-connect, try #{0}'.format(self._tries)
+        if not self._isconnected():
             try:
                 self._connect()
             except httplib.socket.error as e:
@@ -134,10 +141,10 @@ class Stream:
                     time.sleep(self._delay)
                     self._delay += self._delay  # fibonacii delays
                     self._tries += 1
-                    if self._tries < self._maxtries:
+                    if self._tries < self.maxtries:
                         self._reconnect()
                     else:
-                        self._reset()
+                        self._reset_retries()
                         raise e
                 else:
                     # Unknown scenario
