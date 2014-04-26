@@ -17,3 +17,20 @@ stream.write('some more data') # reconnects if disconnected
 
 response = stream.close()
 ```
+
+### Docs
+- `r = chunked_request(addr, port=80, headers={})`
+
+  Initializes a connection to `addr:port` with `headers`.
+
+- `r.write(data, reconnect=True)`
+
+  Write chunk-encoded data
+  
+- `response = r.close()`
+
+  Close connection and return a HTTPResponse object
+
+- `int r.maxtries`
+
+  Max number of times to attempt re-connecting before raising an error
