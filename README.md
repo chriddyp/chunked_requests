@@ -18,6 +18,8 @@ stream.write('some more data') # reconnects if disconnected
 response = stream.close()
 ```
 
+See more in this IPython notebook: [https://github.com/chriddyp/chunked-requests/blob/master/usage.ipynb](https://github.com/chriddyp/chunked-requests/blob/master/usage.ipynb)
+
 ### Docs
 - `r = chunked_request(addr, port=80, headers={})`
 
