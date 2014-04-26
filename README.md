@@ -4,7 +4,7 @@ chunked-requests
 A wrapper around Python's httplib for streaming, chunk-encoded HTTP requests
 
 ### Usage
-```
+```python
 import chunked_requests
 
 stream = chunked_requests('127.0.0.1', 8080)
