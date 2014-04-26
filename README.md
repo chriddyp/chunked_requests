@@ -5,9 +5,9 @@ A wrapper around Python's httplib for streaming, chunk-encoded HTTP requests
 
 ### Usage
 ```python
-import chunked_requests
+from chunked_requests import Stream
 
-stream = chunked_requests('127.0.0.1', 8080)
+stream = Stream('127.0.0.1', 8080)
 
 stream.write('some data')
 
@@ -21,18 +21,18 @@ response = stream.close()
 See more in this IPython notebook: [https://github.com/chriddyp/chunked-requests/blob/master/usage.ipynb](https://github.com/chriddyp/chunked-requests/blob/master/usage.ipynb)
 
 ### Docs
-- `r = chunked_request(addr, port=80, headers={})`
+- `s = Stream(addr, port=80, headers={})`
 
   Initializes a connection to `addr:port` with `headers`.
 
-- `r.write(data, reconnect=True)`
+- `s.write(data, reconnect=True)`
 
-  Write chunk-encoded data
+  Write chunk-encoded data, and reconnect if disconnected.
   
-- `response = r.close()`
+- `response = s.close()`
 
   Close connection and return a HTTPResponse object
 
-- `int r.maxtries`
+- `int s.maxtries`
 
   Max number of times to attempt re-connecting before raising an error
