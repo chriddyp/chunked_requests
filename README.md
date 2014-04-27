@@ -18,7 +18,7 @@ stream.write('some more data') # reconnects if disconnected
 response = stream.close()
 ```
 
-See more in this IPython notebook: [https://github.com/chriddyp/chunked-requests/blob/master/usage.ipynb](https://github.com/chriddyp/chunked-requests/blob/master/usage.ipynb)
+See more in this IPython notebook: [http://nbviewer.ipython.org/github/chriddyp/chunked_requests/blob/master/usage.ipynb?create=1](http://nbviewer.ipython.org/github/chriddyp/chunked_requests/blob/master/usage.ipynb?create=1)
 
 ### Docs
 - `s = Stream(addr, port=80, headers={})`
