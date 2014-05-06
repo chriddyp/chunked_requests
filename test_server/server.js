@@ -29,19 +29,29 @@ function sourcehandler (req, res) {
  
    req.pipe(process.stdout);
 
-   // Keep connection open for 10s, close with a 200
+   /*
+   console.log("Closing");
+   res.writeHead(400);
+   res.end("Some error.");
+   req.destroy();
+    */
+
+
+   // Keep connection open for 30s, close with a 408
    setTimeout(function(){
       console.log("\nclosing");
-     res.writeHead(200);
-     res.end("OK");
+     res.writeHead(408);
+     res.end("timeout on active data");
      req.destroy();
-   }, 10000);
+   }, 30000);
 
+   /*
    // After 50s, close with a timeout
    setTimeout(function(){
     console.log('TIMEOUT!');
     res.writeHead(522);
     res.end();
    }, 50000);
+   */
 
 }
