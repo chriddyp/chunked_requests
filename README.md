@@ -3,7 +3,7 @@ chunked-requests
 
 A wrapper around Python's httplib for streaming, chunk-encoded HTTP requests.
 
-### Usage
+### Quickly
 ```python
 from chunked_requests import Stream
 
@@ -25,9 +25,9 @@ See more in this IPython notebook: [http://nbviewer.ipython.org/github/chriddyp/
 
   Initializes a connection to `addr:port` with `headers`.
 
-- `s.write(data, reconnect=True)`
+- `s.write(data, reconnect_on=(200, '', ))`
 
-  Write chunk-encoded data, and reconnect if disconnected.
+  Write chunk-encoded data, and reconnect depending on the status code.
   
 - `response = s.close()`
 
