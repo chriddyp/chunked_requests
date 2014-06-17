@@ -1,7 +1,7 @@
 chunked-requests
 ================
 
-A wrapper around Python's httplib for streaming, chunk-encoded HTTP requests.
+A wrapper around Python's httplib for streaming, chunk-encoded HTTP requests. As used in the [Plotly-Python API](https://plot.ly/python/) for streaming, real-time graphing in the browser: [https://plot.ly/python/streaming](https://plot.ly/python/streaming).
 
 ### Quickly
 ```python
