@@ -5,6 +5,9 @@ machine:
 dependencies:
   pre:
     - PYENV_VERSION=2.7 && pip install nose coverage
-  post:
-    - nosetests test/tests.py
 
+test:
+  pre:
+    - node test/server.js
+  override:
+    - nosetests test/tests.py
