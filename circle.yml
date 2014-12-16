@@ -4,7 +4,6 @@ machine:
 
 dependencies:
   pre:
-    - pip install nose coverage
 
 test:
   pre:
