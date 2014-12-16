@@ -8,7 +8,7 @@ dependencies:
 test:
   pre:
     - node test/server.js:
-      background: true
+        background: true
     - sleep 5
   override:
     - nosetests test/tests.py
