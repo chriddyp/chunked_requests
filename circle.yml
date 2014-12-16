@@ -4,6 +4,9 @@ machine:
 
 dependencies:
   pre:
+      - cd test
+      - mkdir node_modules
+      - npm install http-proxy
 
 test:
   pre:
