@@ -11,4 +11,4 @@ test:
         background: true
     - sleep 5
   override:
-    - nosetests test/unittest.py
+    - nosetests test/tests.py
