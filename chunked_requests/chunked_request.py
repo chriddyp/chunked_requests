@@ -61,8 +61,10 @@ class Stream:
             msg = data
             msglen = format(len(msg), 'x')  # msg length in hex
             # Send the message in chunk-encoded form
+            self._conn.sock.setblocking(1)
             self._conn.send('{msglen}\r\n{msg}\r\n'
                             .format(msglen=msglen, msg=msg))
+            self._conn.sock.setblocking(0)
         except http_client.socket.error:
             self._reconnect()
             self.write(data)
