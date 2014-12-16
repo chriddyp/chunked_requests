@@ -38,7 +38,7 @@ function sourcehandler (req, res) {
           res.writeHead(408);
           res.end("timeout on active data");
           req.destroy();
-        }, 10000);
+        }, 5000);
     }
 }
 
