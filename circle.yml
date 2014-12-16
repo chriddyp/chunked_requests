@@ -1,0 +1,10 @@
+machine:
+  node:
+    version: 0.10.33
+
+dependencies:
+  pre:
+    - PYENV_VERSION=2.7 && pip install nose coverage
+  post:
+    - nosetests test/tests.py
+
