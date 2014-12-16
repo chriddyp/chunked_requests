@@ -18,7 +18,7 @@ class Test(unittest.TestCase):
         written to the server.
         '''
 
-        _remove_file('test/request.txt')
+        _remove_file('request.txt')
 
         stream = Stream('127.0.0.1',
                         port=8080,
@@ -27,12 +27,12 @@ class Test(unittest.TestCase):
         body = 'request-body'*10
         stream.write(body)
         time.sleep(1)
-        with open('test/request.txt', 'r') as f:
+        with open('request.txt', 'r') as f:
             body_from_file = f.read()
 
         assert(body_from_file == body)
 
-        _remove_file('test/request.txt')
+        _remove_file('request.txt')
 
 
     def test_reconnect_on_408_timeout(self):
@@ -44,7 +44,7 @@ class Test(unittest.TestCase):
         with a broken connection and re-connect.
         '''
 
-        _remove_file('test/request.txt')
+        _remove_file('request.txt')
 
         stream = Stream('127.0.0.1',
                         port=8080,
@@ -55,12 +55,12 @@ class Test(unittest.TestCase):
                          reconnect_on=('', 200, 408))
             time.sleep(1)
 
-        with open('test/request.txt', 'r') as f:
+        with open('request.txt', 'r') as f:
             body_from_file = f.read()
 
         body_sent = ''.join([str(i) for i in range(8)])
         assert(body_from_file == body_sent)
-        _remove_file('test/request.txt')
+        _remove_file('request.txt')
 
 
     def test_failure_on_408_timeout(self):
@@ -86,7 +86,7 @@ class Test(unittest.TestCase):
                              "timeout on active data.")
 
     def test_huge_request_on_latent_server(self):
-        _remove_file('test/request.txt')
+        _remove_file('request.txt')
 
         stream = Stream('127.0.0.1',
                         port=9008)
@@ -97,12 +97,12 @@ class Test(unittest.TestCase):
         # Writing 5 mill chars takes a bit, so wait a few
         # extra secs before comparing
         time.sleep(13)
-        with open('test/request.txt', 'r') as f:
+        with open('request.txt', 'r') as f:
             body_from_file = f.read()
 
         assert(body_from_file == body)
 
-        _remove_file('test/request.txt')
+        _remove_file('request.txt')
 
 
 def _remove_file(filename):
