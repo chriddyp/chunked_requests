@@ -80,6 +80,8 @@ class Stream:
 
         ## only doing HTTPConnection, so only use http_proxy
         proxy = os.environ.get("http_proxy");
+        proxy_server = None
+        proxy_port = None
         if (proxy != None):
             p = urlparse(proxy)
             proxy_server = p.hostname
