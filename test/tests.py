@@ -104,6 +104,43 @@ class Test(unittest.TestCase):
 
         _remove_file('request.txt')
 
+    def test__get_proxy_config(self):
+
+        stream = Stream('127.0.0.1', port=8080, url='test_stream_url')
+
+        # http_proxy is not set
+        # --> proxy_server and proxy_port should not be set
+        proxy_server, proxy_port = stream._get_proxy_config()
+        self.assertIsNone(proxy_server)
+        self.assertIsNone(proxy_port)
+
+        # set proxy env. variable
+        os.environ['http_proxy'] = 'http://test:123'
+
+        # http_proxy is set
+        # --> proxy_server and proxy_port should be set
+        proxy_server, proxy_port = stream._get_proxy_config()
+        self.assertEqual(proxy_server, 'test')
+        self.assertEqual(proxy_port, 123)
+
+        # no_proxy is set but url is not in no_proxy
+        # --> proxy_server and proxy_port should be set
+        os.environ['no_proxy'] = 'some_url, other_url'
+        proxy_server, proxy_port = stream._get_proxy_config()
+        self.assertEqual(proxy_server, 'test')
+        self.assertEqual(proxy_port, 123)
+
+        # http_proxy and no_proxy are set and url is in no_proxy
+        # --> proxy_server and proxy_port should not be set
+        os.environ['no_proxy'] = 'some_url, {}, other_url'.format(stream._url)
+        proxy_server, proxy_port = stream._get_proxy_config()
+        self.assertIsNone(proxy_server)
+        self.assertIsNone(proxy_port)
+
+        # unset env variables
+        os.environ.pop('http_proxy')
+        os.environ.pop('no_proxy')
+
 
 def _remove_file(filename):
     try:
