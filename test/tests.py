@@ -106,7 +106,7 @@ class Test(unittest.TestCase):
 
     def test__get_proxy_config(self):
 
-        stream = Stream('127.0.0.1', port=8080, url='test_stream_url')
+        stream = Stream('127.0.0.1', port=8080)
 
         # http_proxy is not set
         # --> proxy_server and proxy_port should not be set
@@ -132,7 +132,9 @@ class Test(unittest.TestCase):
 
         # http_proxy and no_proxy are set and url is in no_proxy
         # --> proxy_server and proxy_port should not be set
-        os.environ['no_proxy'] = 'some_url, {}, other_url'.format(stream._url)
+        os.environ['no_proxy'] = 'some_url, {}, other_url'.format(
+            stream._server
+        )
         proxy_server, proxy_port = stream._get_proxy_config()
         self.assertIsNone(proxy_server)
         self.assertIsNone(proxy_port)
