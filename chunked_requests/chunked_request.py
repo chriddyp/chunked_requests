@@ -76,7 +76,8 @@ class Stream:
     def _get_proxy_config(self):
         """
         Determine if self._url should be passed through a proxy. If so, return
-        the appropriate proxy_server and proxy_port
+        the appropriate proxy_server and proxy_port. Assumes https_proxy is used
+        when ssl_enabled=True.
 
         """
 
