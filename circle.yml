@@ -6,6 +6,7 @@ machine:
 
 dependencies:
   pre:
+      - pip install -r requirements.py
       - cd test
       - mkdir node_modules
       - npm install http-proxy
