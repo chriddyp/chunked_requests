@@ -34,7 +34,6 @@ class Test(unittest.TestCase):
 
         _remove_file('request.txt')
 
-
     def test_reconnect_on_408_timeout(self):
         ''' Test that `reconnect_on` indeed
         reconnects on a `408` timeout response
@@ -61,7 +60,6 @@ class Test(unittest.TestCase):
         body_sent = ''.join([str(i) for i in range(8)])
         assert(body_from_file == body_sent)
         _remove_file('request.txt')
-
 
     def test_failure_on_408_timeout(self):
         ''' Test that an error is thrown when
