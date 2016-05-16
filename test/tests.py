@@ -34,7 +34,6 @@ class Test(unittest.TestCase):
 
         _remove_file('request.txt')
 
-
     def test_reconnect_on_408_timeout(self):
         ''' Test that `reconnect_on` indeed
         reconnects on a `408` timeout response
@@ -61,7 +60,6 @@ class Test(unittest.TestCase):
         body_sent = ''.join([str(i) for i in range(8)])
         assert(body_from_file == body_sent)
         _remove_file('request.txt')
-
 
     def test_failure_on_408_timeout(self):
         ''' Test that an error is thrown when
@@ -106,7 +104,7 @@ class Test(unittest.TestCase):
 
     def test__get_proxy_config(self):
 
-        stream = Stream('127.0.0.1', port=8080, url='test_stream_url')
+        stream = Stream('127.0.0.1', port=8080)
 
         # http_proxy is not set
         # --> proxy_server and proxy_port should not be set
@@ -132,7 +130,9 @@ class Test(unittest.TestCase):
 
         # http_proxy and no_proxy are set and url is in no_proxy
         # --> proxy_server and proxy_port should not be set
-        os.environ['no_proxy'] = 'some_url, {}, other_url'.format(stream._url)
+        os.environ['no_proxy'] = 'some_url, {}, other_url'.format(
+            stream._server
+        )
         proxy_server, proxy_port = stream._get_proxy_config()
         self.assertIsNone(proxy_server)
         self.assertIsNone(proxy_port)
@@ -140,6 +140,29 @@ class Test(unittest.TestCase):
         # unset env variables
         os.environ.pop('http_proxy')
         os.environ.pop('no_proxy')
+
+    def test__get_proxy_config(self):
+
+        stream = Stream('127.0.0.1', port=8080)
+
+        # we actually still have an http connection here, but we're faking https
+        # to test the expected proxy behaviour
+        stream._ssl_enabled = True
+
+        # https_proxy is not set
+        # --> proxy_server and proxy_port should not be set
+        proxy_server, proxy_port = stream._get_proxy_config()
+        self.assertIsNone(proxy_server)
+        self.assertIsNone(proxy_port)
+
+        # set proxy env. variable
+        os.environ['https_proxy'] = 'https://test:123'
+
+        # https_proxy is set
+        # --> proxy_server and proxy_port should be set
+        proxy_server, proxy_port = stream._get_proxy_config()
+        self.assertEqual(proxy_server, 'test')
+        self.assertEqual(proxy_port, 123)
 
 
 def _remove_file(filename):
