@@ -4,6 +4,7 @@ import os
 from six.moves import http_client
 from six.moves.urllib.parse import urlparse
 
+
 class Stream:
     def __init__(self, server, port=80, headers={}, url='/'):
         ''' Initialize a stream object and an HTTP Connection
