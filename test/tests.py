@@ -143,6 +143,29 @@ class Test(unittest.TestCase):
         os.environ.pop('http_proxy')
         os.environ.pop('no_proxy')
 
+    def test__get_proxy_config(self):
+
+        stream = Stream('127.0.0.1', port=8080)
+
+        # we actually still have an http connection here, but we're faking https
+        # to test the expected proxy behaviour
+        stream._ssl_enabled = True
+
+        # https_proxy is not set
+        # --> proxy_server and proxy_port should not be set
+        proxy_server, proxy_port = stream._get_proxy_config()
+        self.assertIsNone(proxy_server)
+        self.assertIsNone(proxy_port)
+
+        # set proxy env. variable
+        os.environ['https_proxy'] = 'https://test:123'
+
+        # https_proxy is set
+        # --> proxy_server and proxy_port should be set
+        proxy_server, proxy_port = stream._get_proxy_config()
+        self.assertEqual(proxy_server, 'test')
+        self.assertEqual(proxy_port, 123)
+
 
 def _remove_file(filename):
     try:
