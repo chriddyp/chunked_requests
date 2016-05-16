@@ -89,7 +89,7 @@ class Stream:
         else:
             proxy = os.environ.get("http_proxy")
         no_proxy = os.environ.get("no_proxy")
-        no_proxy_url = no_proxy and self._url in no_proxy
+        no_proxy_url = no_proxy and self._server in no_proxy
 
         if proxy and not no_proxy_url:
             p = urlparse(proxy)
