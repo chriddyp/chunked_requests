@@ -262,7 +262,7 @@ class Stream:
                     #
                     # Python 2.7.9+ and Python 3.3+ give this its own exception,
                     # SSLWantReadError
-                return True
+                    return True
             else:
                 # Unknown scenario
                 raise e
