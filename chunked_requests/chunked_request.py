@@ -1,9 +1,10 @@
 import time
 import six
 import os
+import ssl
+
 from six.moves import http_client
 from six.moves.urllib.parse import urlparse
-from ssl import SSLError
 
 
 class Stream:
@@ -254,7 +255,7 @@ class Stream:
                 # let's just assume that we're still connected and
                 # hopefully recieve some data on the next try.
                 return True
-            elif isinstance(e, SSLError):
+            elif isinstance(e, ssl.SSLError):
                 if e.errno == 2:
                     # errno 2 occurs when trying to read or write data, but more
                     # data needs to be received on the underlying TCP transport
