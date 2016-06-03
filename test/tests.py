@@ -141,7 +141,7 @@ class Test(unittest.TestCase):
         os.environ.pop('http_proxy')
         os.environ.pop('no_proxy')
 
-    def test__get_proxy_config(self):
+    def test__get_proxy_config_with_ssl(self):
 
         stream = Stream('127.0.0.1', port=8080)
 
