@@ -102,6 +102,19 @@ class Stream:
 
         return proxy_server, proxy_port
 
+    def _get_ssl_context(self):
+        """
+        Return an unverified context if ssl verification is disabled.
+
+        """
+
+        context = None
+
+        if not self._ssl_verification_enabled:
+            context = ssl._create_unverified_context()
+
+        return context
+
     def _connect(self):
         ''' Initialize an HTTP/HTTPS connection with chunked Transfer-Encoding
         to server:port with optional headers.
@@ -114,8 +127,9 @@ class Stream:
 
         if (proxy_server and proxy_port):
             if ssl_enabled:
+                context = self._get_ssl_context()
                 self._conn = http_client.HTTPSConnection(
-                    proxy_server, proxy_port
+                    proxy_server, proxy_port, context=context
                 )
             else:
                 self._conn = http_client.HTTPConnection(
@@ -124,7 +138,10 @@ class Stream:
             self._conn.set_tunnel(server, port)
         else:
             if ssl_enabled:
-                self._conn = http_client.HTTPSConnection(server, port)
+                context = self._get_ssl_context()
+                self._conn = http_client.HTTPSConnection(
+                    server, port, context=context
+                )
             else:
                 self._conn = http_client.HTTPConnection(server, port)
 
