@@ -8,7 +8,8 @@ from six.moves.urllib.parse import urlparse
 
 
 class Stream:
-    def __init__(self, server, port=80, headers={}, url='/', ssl_enabled=False):
+    def __init__(self, server, port=80, headers={}, url='/', ssl_enabled=False,
+                 ssl_verification_enabled=True):
         ''' Initialize a stream object and an HTTP or HTTPS connection
         with chunked Transfer-Encoding to server:port with optional headers.
         '''
@@ -21,6 +22,7 @@ class Stream:
         self._headers = headers
         self._url = url
         self._ssl_enabled = ssl_enabled
+        self._ssl_verification_enabled = ssl_verification_enabled
         self._connect()
 
     def write(self, data, reconnect_on=('', 200, )):
