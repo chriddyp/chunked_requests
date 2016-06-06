@@ -2,6 +2,8 @@ import unittest
 import os
 import errno
 import time
+import ssl
+
 from nose.tools import assert_raises
 
 # from chunked_requests import
@@ -141,7 +143,7 @@ class Test(unittest.TestCase):
         os.environ.pop('http_proxy')
         os.environ.pop('no_proxy')
 
-    def test__get_proxy_config(self):
+    def test__get_proxy_config_with_ssl(self):
 
         stream = Stream('127.0.0.1', port=8080)
 
@@ -163,6 +165,23 @@ class Test(unittest.TestCase):
         proxy_server, proxy_port = stream._get_proxy_config()
         self.assertEqual(proxy_server, 'test')
         self.assertEqual(proxy_port, 123)
+
+    def test__get_ssl_context(self):
+
+        stream = Stream('127.0.0.1', port=8080)
+
+        # we actually still have an http connection here, but we're faking https
+        # to test the expected proxy behaviour
+        stream._ssl_enabled = True
+
+        # if ssl verification is enabled (default), context=None expected
+        context = stream._get_ssl_context()
+        self.assertIsNone(context)
+
+        # if ssl verification is disabled, SSLContext expected
+        stream._ssl_verification_enabled = False
+        context = stream._get_ssl_context()
+        self.assertIsInstance(context, ssl.SSLContext)
 
 
 def _remove_file(filename):
